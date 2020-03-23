@@ -29,6 +29,15 @@ class Heap:
         outstr += "]"
         return outstr
 
+    def min(self):
+        return self.structure[self.root]
+
+    def length(self):
+        return self.size
+
+    def is_empty(self):
+        return self.length == 0
+
     def add(self, key, value):
         element = Element(key, value)
         self.structure.append(element)
@@ -48,7 +57,7 @@ class Heap:
                 self.bubbleUp(parent)
 
     def remove_min(self):
-        min = self.structure[self.root]
+        min = self.min()
         self.structure[self.root], self.structure[self.last] = self.structure[self.last], self.structure[self.root]
         self.structure.pop(self.last)
         self.last -= 1
@@ -71,36 +80,4 @@ class Heap:
         if self.structure[index].key > self.structure[swap].key:
             self.structure[index], self.structure[swap] = self.structure[swap], self.structure[index]
             self.bubbleDown(swap)
-
-
-
-heap = Heap()
-e1 = heap.add(25, 1)
-print(heap, heap.last)
-e2 = heap.add(27, 1)
-print(heap, heap.last)
-e3 = heap.add(29, 1)
-print(heap, heap.last)
-e4 = heap.add(28, 1)
-print(heap, heap.last)
-e5 = heap.add(35, 1)
-print(heap, heap.last)
-e6 = heap.add(49, 1)
-print(heap, heap.last)
-e7 = heap.add(43, 1)
-print(heap, heap.last)
-e8 = heap.add(37, 1)
-print(heap, heap.last)
-e9 = heap.add(22, 1)
-print(heap, heap.last)
-e10 = heap.add(50, 1)
-print(heap, heap.last)
-e11 = heap.add(12, 1)
-print(heap, heap.last)
-e12 = heap.add(33, 1)
-print(heap, heap.last)
-heap.remove_min()
-print(heap, heap.last)
-heap.remove_min()
-print(heap, heap.last)
 
