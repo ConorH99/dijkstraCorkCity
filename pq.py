@@ -66,14 +66,14 @@ class Heap:
         return min
 
     def bubbleDown(self, index):
-        if 2 * index + 2 <= self.size:
+        if 2 * index + 2 <= self.last:
             lc = 2 * index + 1
             rc = 2 * index + 2
             if self.structure[lc].key < self.structure[rc].key:
                 swap = 2 * index + 1
             else:
                 swap = 2 * index + 2
-        elif 2 * index + 1 <= self.size:
+        elif 2 * index + 1 <= self.last:
             swap = 2 * index + 1
         else:
             return None
