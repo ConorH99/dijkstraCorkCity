@@ -51,14 +51,14 @@ class APQ(Heap):
                 self.bubbleUp(parent)
 
     def bubbleDown(self, index):
-        if 2 * index + 2 <= self.size:
+        if 2 * index + 2 <= self.last:
             lc = 2 * index + 1
             rc = 2 * index + 2
             if self.structure[lc].key < self.structure[rc].key:
                 swap = 2 * index + 1
             else:
                 swap = 2 * index + 2
-        elif 2 * index + 1 <= self.size:
+        elif 2 * index + 1 <= self.last:
             swap = 2 * index + 1
         else:
             return None
@@ -66,6 +66,19 @@ class APQ(Heap):
             self.structure[index].index, self.structure[swap].index = self.structure[swap].index, self.structure[index].index
             self.structure[index], self.structure[swap] = self.structure[swap], self.structure[index]
             self.bubbleDown(swap)
+
+    def remove(self, element):
+        swapElt = self.structure[self.last]
+        self.structure[element.index], self.structure[swapElt.index] = self.structure[swapElt.index], self.structure[element.index]
+        print(self)
+        element.index, swapElt.index = swapElt.index, element.index
+        print(self, self.size)
+        removed = self.structure.pop(self.last)
+        self.last -= 1
+        self.bubbleDown(swapElt.index)
+        self.size -= 1
+        return removed
+
             
 
 heap = APQ()
@@ -93,9 +106,9 @@ e11 = heap.add(12, 1)
 print(heap)
 e12 = heap.add(33, 1)
 print(heap)
-heap.remove_min()
+'''heap.remove_min()
 print(heap)
 heap.remove_min()
-print(heap)
-heap.updateKey(e4, 23)
+print(heap)'''
+heap.remove(e3)
 print(heap)
