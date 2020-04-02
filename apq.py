@@ -1,5 +1,7 @@
 from pq import *
 
+'''Inheriting the Priority Queue class and Element class as a foundation for building 
+the Adaptable Priority Queue'''
 class Element(Element):
     def __init__(self, key, value, index):
         super().__init__(key, value)
@@ -8,6 +10,12 @@ class Element(Element):
     def __str__(self):
         outstr = "(%i, %i (%i))" % (self.key, self.value, self.index)
         return outstr
+
+    
+    def wipe(self):
+        self.key = None
+        self.value = None
+        self.index = None
 
 class APQ(Heap):
 
@@ -26,6 +34,8 @@ class APQ(Heap):
 
     def remove_min(self):
         min = self.min()
+        # Swapping the index values for the root and last before swapping the nodes
+        # themselves to keep it balanced. Same technique used in bubbleUp and bubbleDown
         self.structure[self.root].index, self.structure[self.last].index = self.structure[self.last].index, self.structure[self.root].index 
         self.structure[self.root], self.structure[self.last] = self.structure[self.last], self.structure[self.root]
         self.structure.pop(self.last)
@@ -70,45 +80,9 @@ class APQ(Heap):
     def remove(self, element):
         swapElt = self.structure[self.last]
         self.structure[element.index], self.structure[swapElt.index] = self.structure[swapElt.index], self.structure[element.index]
-        print(self)
         element.index, swapElt.index = swapElt.index, element.index
-        print(self, self.size)
         removed = self.structure.pop(self.last)
         self.last -= 1
         self.bubbleDown(swapElt.index)
         self.size -= 1
         return removed
-
-            
-
-heap = APQ()
-e1 = heap.add(25, 1)
-print(heap)
-e2 = heap.add(27, 1)
-print(heap)
-e3 = heap.add(29, 1)
-print(heap)
-e4 = heap.add(28, 1)
-print(heap)
-e5 = heap.add(35, 1)
-print(heap)
-e6 = heap.add(49, 1)
-print(heap)
-e7 = heap.add(43, 1)
-print(heap)
-e8 = heap.add(37, 1)
-print(heap)
-e9 = heap.add(22, 1)
-print(heap)
-e10 = heap.add(50, 1)
-print(heap)
-e11 = heap.add(12, 1)
-print(heap)
-e12 = heap.add(33, 1)
-print(heap)
-'''heap.remove_min()
-print(heap)
-heap.remove_min()
-print(heap)'''
-heap.remove(e3)
-print(heap)
