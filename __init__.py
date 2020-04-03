@@ -33,10 +33,10 @@ def println(dic):
         print("%s: (%i, %s)" % (vertex, closed[vertex][0], closed[vertex][1]))
     print("----------")
 
-graph = graphreader("C:/Users/conor/Desktop/vscode/algorithms2/graph/simplegraph1.txt")
+graph = graphreader("simplegraph1.txt")
 closed = dijkstra(graph, 1)
 println(closed)
 
-graph = graphreader("C:/Users/conor/Desktop/vscode/algorithms2/graph/simplegraph2.txt")
+graph = graphreader("simplegraph2.txt")
 closed = dijkstra(graph, 14)
 println(closed)
