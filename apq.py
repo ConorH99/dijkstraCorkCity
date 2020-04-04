@@ -10,7 +10,6 @@ class Element(Element):
     def __str__(self):
         outstr = "(%i, %i (%i))" % (self.key, self.value, self.index)
         return outstr
-
     
     def wipe(self):
         self.key = None
