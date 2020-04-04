@@ -1,5 +1,4 @@
 from apq import  *
-from graph import *
 
 def dijkstra(graph, s):
     open = APQ()
