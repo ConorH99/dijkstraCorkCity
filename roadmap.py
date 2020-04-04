@@ -1,4 +1,5 @@
 from graph import *
+from dijkstra import *
 
 class Vertex(Vertex):
     
@@ -36,49 +37,43 @@ class Graph(Graph):
         return None
 
     def addVertex(self, label, lat, long):
-            v = Vertex(label)
-            self.coordinates[v] = (lat, long)
-            self.structure[v] = {}
-            self.labelToVertex[label] = v
-            return v
+        v = Vertex(label)
+        self.coordinates[v] = (lat, long)
+        self.structure[v] = {}
+        self.labelToVertex[label] = v
+        return v
 
     def addVertexIfNew(self, label, lat, long):
-        for v in self.structure:
-            if v.label == label:
-                return None
-        return self.addVertex(label, lat, long)
+        if label not in self.labelToVertex:
+            return self.addVertex(label, lat,long)
+        return None
 
-def graphreader(file):
-    graph = Graph()
-    infile = open(file, "r")
-    line = infile.readline()
-    while line == "Node\n":
-        line = infile.readline().strip().split(" ")
-        id = line[1]
-        line = infile.readline().strip().split(" ")
-        lat = line[1]
-        long = line[2]
-        v = graph.addVertexIfNew(id, lat, long)
-        line = infile.readline()
-    while line == "Edge\n":
-        line = infile.readline().strip().split(" ")
-        src = line[1]
-        srcv = graph.getVertexByLabel(src)
-        line = infile.readline().strip().split(" ")
-        tgt = line[1]
-        tgtv = graph.getVertexByLabel(tgt)
-        infile.readline()
-        line = infile.readline().strip().split(" ")
-        time = line[1]
-        graph.addEdge(srcv, tgtv, time)
-        infile.readline()
-        line = infile.readline()
-    return graph
+    def shortestPath(self, v, w):
+        sp = dijkstra(self, v)
+        shortestPathList = []
+        self.shortestPathListBuilder(v, w, shortestPathList, sp)
+        shortestPathList.reverse()
+        return shortestPathList
 
+    def shortestPathListBuilder(self, v, w, spList, sp):
+        ''' Takes the shortest path to all reachable vertices from the dijksta output, and restricts it
+            from the start vertex "v" to a vertex of choice "w". Builds a list with each index formed by
+            ("v", "Cost to that vertex from start vertex). Then reverses the list  '''
+        spList.append((w, sp[w][0]))
+        if w == v:
+            return spList
+        else:
+            return self.shortestPathListBuilder(v, sp[w][1], spList, sp)
 
-graph = graphreader("Dijkstra-Cork-City\simpleroute.txt")
-print(graph)
-
-
-
-
+    def printShortestPathList(self, list):
+        ''' Prints out the name of each vertex and the latitude and the longitude associated with each vertex. 
+            This output can be entered into the textbox for https://www.gpsvisualizer.com/map_input?form=google
+            to visualise it on a map '''
+            
+        outstr = "Name,Latitude,Longitude\n"
+        for vertex in list:
+            v = self.getVertexByLabel(vertex[0])
+            latitude = self.coordinates[v][0]
+            longitude = self.coordinates[v][1]
+            outstr += "%s,%s,%s\n" %(v.element(), latitude, longitude)
+        print(outstr)
