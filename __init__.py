@@ -1,42 +1,50 @@
-from graph import *
-from dijkstra import *
+from roadmap import *
 
-def graphreader(filename):
-    """ Read and return the route map in filename. """
+def graphreader(file):
     graph = Graph()
-    file = open(filename, 'r')
-    entry = file.readline() #either 'Node' or 'Edge'
+    infile = open(file, "r")
+    line = infile.readline()
     num = 0
-    while entry == 'Node\n':
+    while line == "Node\n":
         num += 1
-        nodeid = int(file.readline().split()[1])
-        vertex = graph.addVertex(nodeid)
-        entry = file.readline() #either 'Node' or 'Edge'
-    print('Read', num, 'vertices and added into the graph')
+        line = infile.readline().strip().split(" ")
+        id = int(line[1])
+        line = infile.readline().strip().split(" ")
+        lat = float(line[1])
+        long = float(line[2])
+        v = graph.addVertex(id, lat, long)
+        line = infile.readline()
     num = 0
-    while entry == 'Edge\n':
+    while line == "Edge\n":
         num += 1
-        source = int(file.readline().split()[1])
-        sv = graph.getVertexByLabel(source)
-        target = int(file.readline().split()[1])
-        tv = graph.getVertexByLabel(target)
-        length = float(file.readline().split()[1])
-        edge = graph.addEdge(sv, tv, length)
-        file.readline() #read the one-way data
-        entry = file.readline() #either 'Node' or 'Edge'
-    print('Read', num, 'edges and added into the graph')
+        line = infile.readline().strip().split(" ")
+        src = int(line[1])
+        srcv = graph.getVertexByLabel(src)
+        line = infile.readline().strip().split(" ")
+        tgt = int(line[1])
+        tgtv = graph.getVertexByLabel(tgt)
+        infile.readline()
+        line = infile.readline().strip().split(" ")
+        time = float(line[1])
+        graph.addEdge(srcv, tgtv, time)
+        infile.readline()
+        line = infile.readline()
     return graph
 
-def println(dic):
-    print("----------")
-    for vertex in dic:
-        print("%s: (%i, %s)" % (vertex, closed[vertex][0], closed[vertex][1]))
-    print("----------")
 
-graph = graphreader("simplegraph1.txt")
-closed = dijkstra(graph, 1)
-println(closed)
-
-graph = graphreader("simplegraph2.txt")
-closed = dijkstra(graph, 14)
-println(closed)
+routemap = graphreader("corkCityData.txt")
+print(routemap.numVertices(), routemap.numEdges())
+ids = {}
+ids['wgb'] = 1669466540
+ids['turnerscross'] = 348809726
+ids['neptune'] = 1147697924
+ids['cuh'] = 860206013
+ids['oldoak'] = 358357
+ids['gaol'] = 3777201945
+ids['mahonpoint'] = 330068634
+sourcestr = "wgb"
+deststr= "neptune"
+source = ids[sourcestr]
+dest = ids[deststr]
+tree = routemap.shortestPath(source,dest)
+routemap.printShortestPathList(tree)
