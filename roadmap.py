@@ -49,8 +49,10 @@ class Graph(Graph):
         return None
 
     def shortestPath(self, v, w):
+        print("Finding shortest path from source vertex to all other reachable vertices...")
         sp = dijkstra(self, v)
         shortestPathList = []
+        print("Restricting shortest path to stop at target vertex...")
         self.shortestPathListBuilder(v, w, shortestPathList, sp)
         shortestPathList.reverse()
         return shortestPathList
@@ -70,10 +72,10 @@ class Graph(Graph):
             This output can be entered into the textbox for https://www.gpsvisualizer.com/map_input?form=google
             to visualise it on a map '''
             
-        outstr = "Name,Latitude,Longitude\n"
+        outstr = "\nName\tLatitude\tLongitude\n"
         for vertex in list:
             v = self.getVertexByLabel(vertex[0])
             latitude = self.coordinates[v][0]
             longitude = self.coordinates[v][1]
-            outstr += "%s,%s,%s\n" %(v.element(), latitude, longitude)
+            outstr += "%s\t%s\t%s\n" %(v.element(), latitude, longitude)
         print(outstr)
