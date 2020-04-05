@@ -1,6 +1,7 @@
 from roadmap import *
 
 def graphreader(file):
+    print("Reading graph information...")
     graph = Graph()
     infile = open(file, "r")
     line = infile.readline()
@@ -14,6 +15,7 @@ def graphreader(file):
         long = float(line[2])
         v = graph.addVertex(id, lat, long)
         line = infile.readline()
+    print("Read in %i vertices" % num)
     num = 0
     while line == "Edge\n":
         num += 1
@@ -29,11 +31,11 @@ def graphreader(file):
         graph.addEdge(srcv, tgtv, time)
         infile.readline()
         line = infile.readline()
+    print("Read in %i edges" % num)
     return graph
 
 
 routemap = graphreader("corkCityData.txt")
-print(routemap.numVertices(), routemap.numEdges())
 ids = {}
 ids['wgb'] = 1669466540
 ids['turnerscross'] = 348809726
