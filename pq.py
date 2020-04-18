@@ -70,9 +70,9 @@ class Heap:
             lc = 2 * index + 1
             rc = 2 * index + 2
             if self.structure[lc].key < self.structure[rc].key:
-                swap = 2 * index + 1
+                swap = lc
             else:
-                swap = 2 * index + 2
+                swap = rc
         elif 2 * index + 1 <= self.last:
             swap = 2 * index + 1
         else:
